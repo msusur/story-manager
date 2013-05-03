@@ -1,34 +1,35 @@
 ﻿using Moq;
-using StoryBoard2.Entities;
+using StoryBoard.Entities;
+using StoryBoard.Tests.TestActivities;
 using Xunit;
 
-namespace StoryBoard2.Tests
+namespace StoryBoard.Tests
 {
     public class StoryManagerTest
     {
         private readonly StoryDefinition _dummyStoryDefinition = new StoryDefinition();
 
         [Fact]
-        // ReSharper disable InconsistentNaming
         public void Story_manager_gets_story_definition_from_repository()
-        // ReSharper restore InconsistentNaming
         {
             var storyManager = TestableStoryManager.Create(_dummyStoryDefinition);
             var result = storyManager.ExecuteStory(new StoryContext(), "test");
-            //Assert.True(result.Value == "My Value");
             storyManager.StoryRepository
                 .Verify(storyRepository => storyRepository.GetStoryByName(It.IsAny<string>()), Times.AtLeastOnce());
         }
-        [Fact]
-        // ReSharper disable InconsistentNaming
-        public void Story_manager_executes_next_story_node()
-        // ReSharper restore InconsistentNaming
-        {
-            var definition = new StoryDefinition("test", 
-                                    new StoryNode("Node1"));
-            var storyManager = TestableStoryManager.Create(_dummyStoryDefinition);
-            var result = storyManager.ExecuteStory(new StoryContext(), "test");
 
+        [Fact]
+        public void Story_manager_executes_next_story_node_starts_from_begining()
+        {
+            var definition = new StoryDefinition("test",
+                                    new StoryNode("Node1", new EmptyActivity()),
+                                    new StoryNode("Node2", new EmptyActivity())
+                                    );
+            var storyExecutor = new StoryExecutor();
+            var storyManager = TestableStoryManager.Create(_dummyStoryDefinition);
+
+            var result = storyManager.ExecuteStory(new StoryContext(), "test");
+            Assert.Equal(result.CurrentStepName, "Node2");
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Moq;
-using StoryBoard2.Abstractions;
-using StoryBoard2.Entities;
+using StoryBoard.Abstractions;
+using StoryBoard.Entities;
 
-namespace StoryBoard2.Tests
+namespace StoryBoard.Tests
 {
     public class TestableStoryManager : StoryManager
     {
@@ -25,7 +25,7 @@ namespace StoryBoard2.Tests
                                .Returns(defaultDefinition);
             }
             var storyExecutor = new Mock<IStoryExecutor>();
-            var testableStoryManager = new TestableStoryManager(storyRepository,storyExecutor);
+            var testableStoryManager = new TestableStoryManager(storyRepository, storyExecutor);
             return testableStoryManager;
         }
     }

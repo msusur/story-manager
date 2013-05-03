@@ -1,9 +1,9 @@
-﻿using StoryBoard2.Entities;
+﻿using StoryBoard.Entities;
 
-namespace StoryBoard2.Abstractions
+namespace StoryBoard.Abstractions
 {
     public interface IStoryExecutor
     {
-        StoryResult Next(StoryDefinition definition, string storyNode);
+        StoryResult Next(StoryContext context, string lastNodeName);
     }
 }

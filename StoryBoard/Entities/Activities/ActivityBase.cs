@@ -1,10 +1,11 @@
 ﻿using System;
+using StoryBoard.Exceptions;
 
-namespace StoryBoard2.Entities
+namespace StoryBoard.Entities.Activities
 {
-    public abstract class Activity
+    public abstract class ActivityBase
     {
-        public ActivityResultWrapper Execute(StoryContext context)
+        public ActivityResultWrapper Execute(ActivityContext context)
         {
             try
             {
@@ -24,19 +25,19 @@ namespace StoryBoard2.Entities
             return ActivityResultWrapper.Empty;
         }
 
-        protected virtual bool OnActivityException(StoryContext context, Exception exception)
+        protected abstract ActivityResultWrapper OnExecutingActivity(ActivityContext context);
+        
+        protected virtual bool OnActivityException(ActivityContext context, Exception exception)
         {
             return false;
         }
 
-        protected abstract ActivityResultWrapper OnExecutingActivity(StoryContext context);
-
-        protected virtual void AfterActivityExecution(StoryContext context)
+        protected virtual void AfterActivityExecution(ActivityContext context)
         {
 
         }
 
-        protected virtual void BeforeActivityExecuting(StoryContext context)
+        protected virtual void BeforeActivityExecuting(ActivityContext context)
         {
         }
     }

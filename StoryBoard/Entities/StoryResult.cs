@@ -1,10 +1,17 @@
-﻿namespace StoryBoard2.Entities
+﻿namespace StoryBoard.Entities
 {
     public class StoryResult
     {
         public string CurrentStepName { get; set; }
+
         public bool IsEnded { get; set; }
+
         public ActivityResultWrapper Value { get; set; }
+
+        public StoryResult(ActivityContext activityContext)
+        {
+            
+        }
     }
 
     public class ActivityResultWrapper

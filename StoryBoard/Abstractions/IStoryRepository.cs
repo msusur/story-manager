@@ -1,6 +1,6 @@
-﻿using StoryBoard2.Entities;
+﻿using StoryBoard.Entities;
 
-namespace StoryBoard2.Abstractions
+namespace StoryBoard.Abstractions
 {
     public interface IStoryRepository
     {

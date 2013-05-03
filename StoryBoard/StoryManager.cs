@@ -1,9 +1,9 @@
 ﻿using System;
-using StoryBoard2.Abstractions;
-using StoryBoard2.Entities;
-using StoryBoard2.Exceptions;
+using StoryBoard.Abstractions;
+using StoryBoard.Entities;
+using StoryBoard.Exceptions;
 
-namespace StoryBoard2
+namespace StoryBoard
 {
     public class StoryManager : IStoryManager
     {
@@ -31,13 +31,16 @@ namespace StoryBoard2
             {
                 throw new ArgumentNullException("storyName");
             }
+            context.CurrentStoryName = storyName;
+            
             var definition = _storyRepository.GetStoryByName(storyName);
             if (definition == null)
             {
                 throw new StoryDefinitionNotFoundException(storyName);
             }
+            context.CurrentDefinition = definition;
 
-            var storyResult = _storyExecutor.Next(definition, storyNode);
+            var storyResult = _storyExecutor.Next(context, storyNode);
 
             return storyResult;
         }

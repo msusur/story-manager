@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StoryBoard2.Exceptions
+namespace StoryBoard.Exceptions
 {
     public class StoryDefinitionNotFoundException : Exception
     {

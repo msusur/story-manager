@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
-namespace StoryBoard2.Entities
+namespace StoryBoard.Entities
 {
     [Serializable]
     public class StoryDefinition
@@ -28,6 +29,12 @@ namespace StoryBoard2.Entities
             }
             StoryNodes = new List<StoryNode>(storyNodes);
             StoryName = storyName;
+        }
+
+        internal StoryNode GetNodeByName(string storyNodeName)
+        {
+            return
+                StoryNodes.First(n => n.NodeName.Equals(storyNodeName, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

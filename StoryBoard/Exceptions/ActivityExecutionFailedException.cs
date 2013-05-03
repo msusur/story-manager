@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace StoryBoard2.Entities
+namespace StoryBoard.Exceptions
 {
     public class ActivityExecutionFailedException : Exception
     {
-        public ActivityExecutionFailedException(StoryContext context)
+        public ActivityExecutionFailedException(ActivityContext context)
         {
             
         }
