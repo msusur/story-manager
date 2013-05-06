@@ -8,12 +8,13 @@ namespace StoryBoard.Entities.Conditions
     {
         public IList<ConditionBase> Conditions { get; private set; }
 
-        public IList<StoryNode> StoryNodes { get; set; }
+        public IList<StoryNode> StoryNodes { get; private set; }
 
         public StoryNodeGroup(string nodeName, ConditionBase routeCondition)
             : base(nodeName)
         {
             Conditions = new List<ConditionBase> { routeCondition };
+            StoryNodes = new List<StoryNode>();
         }
 
         public StoryNodeGroup AddCondition(ConditionBase routeCondition)

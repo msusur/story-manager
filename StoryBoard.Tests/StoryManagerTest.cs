@@ -27,10 +27,10 @@ namespace StoryBoard.Tests
                                     new StoryNode("Node1", new EmptyActivity(), new EmptyActivity()),
                                     new StoryNode("Node2", new EmptyActivity())
                                     );
-            var storyManager = TestableStoryManager.Create(_dummyStoryDefinition);
+            var storyManager = TestableStoryManager.Create(new StoryExecutor(), definition);
 
             var result = storyManager.ExecuteStory(new StoryContext(), "test");
-            Assert.Equal(result.CurrentStepName, "Node2");
+            Assert.Equal(result.CurrentStepName, "Node1");
         }
 
         [Fact]
@@ -38,16 +38,16 @@ namespace StoryBoard.Tests
         {
             var definition = new StoryDefinition("test",
                                     new StoryNode("Node1", new EmptyActivity(), new EmptyActivity()),
-                                    new StoryNodeGroup("Node2", new TestCondition("Node21", "Id", 4))
-                                            .AddCondition(new TestCondition("Node22", "Id", 4))
-                                            .AddCondition(new TestCondition("Node22", "Name", "XX"))
-                                            .AddCondition(new TestCondition("Node22", "Surname", "YY"))
+                                    new StoryNodeGroup("Node2", new TestCondition("Node21", () => false))
+                                            .AddCondition(new TestCondition("Node22", () => false))
+                                            .AddCondition(new TestCondition("Node23", () => true))
                                             .AddNode(new StoryNode("Node21", new EmptyActivity(), new EmptyActivity()))
                                             .AddNode(new StoryNode("Node22", new EmptyActivity(), new EmptyActivity()))
-                                            .AddNode(new StoryNode("Node22", new EmptyActivity(), new EmptyActivity()))
+                                            .AddNode(new StoryNode("Node23", new EmptyActivity(), new EmptyActivity()))
                                     );
-            var storyManager = TestableStoryManager.Create(_dummyStoryDefinition);
-
+            var storyManager = TestableStoryManager.Create(new StoryExecutor(), definition);
+            var result = storyManager.ExecuteStory(new StoryContext(), "test", "Node1");
+            Assert.Same("Node2", result.CurrentStepName);
         }
     }
 }

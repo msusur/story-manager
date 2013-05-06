@@ -6,8 +6,8 @@ namespace StoryBoard.Tests
 {
     public class TestableStoryManager : StoryManager
     {
-        public readonly Mock<IStoryRepository> StoryRepository;
-        public readonly Mock<IStoryExecutor> StoryExecutor;
+        public Mock<IStoryRepository> StoryRepository { get; private set; }
+        public Mock<IStoryExecutor> StoryExecutor { get; private set; }
 
         private TestableStoryManager(Mock<IStoryRepository> storyRepository, Mock<IStoryExecutor> storyExecutor)
             : base(storyRepository.Object, storyExecutor.Object)
@@ -16,7 +16,19 @@ namespace StoryBoard.Tests
             StoryExecutor = storyExecutor;
         }
 
-        public static TestableStoryManager Create(StoryDefinition defaultDefinition = null)
+        private TestableStoryManager(Mock<IStoryRepository> storyRepository, IStoryExecutor storyExecutor)
+            : base(storyRepository.Object, storyExecutor)
+        {
+            StoryRepository = storyRepository;
+        }
+        public static TestableStoryManager Create(StoryDefinition definition = null)
+        {
+            var mock = new Mock<IStoryExecutor>();
+            var testable = Create(mock.Object, definition);
+            testable.StoryExecutor = mock;
+            return testable;
+        }
+        public static TestableStoryManager Create(IStoryExecutor executor, StoryDefinition defaultDefinition = null)
         {
             var storyRepository = new Mock<IStoryRepository>();
             if (defaultDefinition != null)
@@ -24,8 +36,8 @@ namespace StoryBoard.Tests
                 storyRepository.Setup(repository => repository.GetStoryByName(It.IsAny<string>()))
                                .Returns(defaultDefinition);
             }
-            var storyExecutor = new Mock<IStoryExecutor>();
-            var testableStoryManager = new TestableStoryManager(storyRepository, storyExecutor);
+
+            var testableStoryManager = new TestableStoryManager(storyRepository, executor);
             return testableStoryManager;
         }
     }

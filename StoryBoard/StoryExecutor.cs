@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using StoryBoard.Abstractions;
 using StoryBoard.Entities;
 using StoryBoard.Invokers;
@@ -10,11 +11,17 @@ namespace StoryBoard
         public StoryResult Next(StoryContext context, string lastNodeName)
         {
             var node = string.IsNullOrEmpty(lastNodeName)
-                                 ? context.CurrentDefinition.StoryNodes.FirstOrDefault()
+                                 ? null
                                  : context.CurrentDefinition.GetNodeByName<NodeBase>(lastNodeName);
-            var index = context.CurrentDefinition.StoryNodes.IndexOf(node);
+            var index = node == null ? -1 : context.CurrentDefinition.StoryNodes.IndexOf(node);
             node = context.CurrentDefinition.StoryNodes[index + 1];
-            return ExecuteNode(context, node);
+            var result = ExecuteNode(context, node);
+            // ReSharper disable PossibleNullReferenceException
+            var lastItemNodeName = context.CurrentDefinition.StoryNodes.LastOrDefault().NodeName;
+            // ReSharper restore PossibleNullReferenceException
+            result.IsEnded = lastItemNodeName.Equals(node.NodeName, StringComparison.CurrentCultureIgnoreCase);
+            result.CurrentStepName = node.NodeName;
+            return result;
         }
 
         private static StoryResult ExecuteNode(StoryContext context, NodeBase node)
