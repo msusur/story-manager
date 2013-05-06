@@ -50,7 +50,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoryManagerTest.cs" />
     <Compile Include="TestableStoryManager.cs" />
-    <Compile Include="TestActivities\EmptyActivity.cs" />
+    <Compile Include="TestEntities\EmptyActivity.cs" />
+    <Compile Include="TestEntities\TestCondition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

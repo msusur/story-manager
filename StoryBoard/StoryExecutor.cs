@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using StoryBoard.Abstractions;
 using StoryBoard.Entities;
+using StoryBoard.Invokers;
 
 namespace StoryBoard
 {
@@ -10,20 +11,17 @@ namespace StoryBoard
         {
             var node = string.IsNullOrEmpty(lastNodeName)
                                  ? context.CurrentDefinition.StoryNodes.FirstOrDefault()
-                                 : context.CurrentDefinition.GetNodeByName(lastNodeName);
+                                 : context.CurrentDefinition.GetNodeByName<NodeBase>(lastNodeName);
             var index = context.CurrentDefinition.StoryNodes.IndexOf(node);
             node = context.CurrentDefinition.StoryNodes[index + 1];
             return ExecuteNode(context, node);
         }
 
-        private static StoryResult ExecuteNode(StoryContext context, StoryNode node)
+        private static StoryResult ExecuteNode(StoryContext context, NodeBase node)
         {
-            var activityContext = new ActivityContext(context);
-            foreach (var activity in node.Activities)
-            {
-                activity.Execute(activityContext);
-            }
-            return new StoryResult(activityContext) ;//TODO: convert activity context to story result. 
+            NodeInvokerBase invokerBase = NodeInvokerFactory.GetInvoker(node);
+
+            return invokerBase.InvokeNode(context, node);
         }
     }
 }

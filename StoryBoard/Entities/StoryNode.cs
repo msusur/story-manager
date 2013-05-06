@@ -5,19 +5,18 @@ using StoryBoard.Entities.Activities;
 namespace StoryBoard.Entities
 {
     [Serializable]
-    public class StoryNode
+    public class StoryNode : NodeBase
     {
         public IList<ActivityBase> Activities { get; private set; }
-
-        public string NodeName { get; set; }
 
         [Obsolete("Dynamic serialization only.")]
         public StoryNode()
         {
-            
+
         }
 
         public StoryNode(string nodeName, params ActivityBase[] activitiesBase)
+            : base(nodeName)
         {
             if (string.IsNullOrEmpty(nodeName))
             {

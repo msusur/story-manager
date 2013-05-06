@@ -44,8 +44,17 @@
     <Compile Include="Abstractions\IStoryExecutor.cs" />
     <Compile Include="ActivityContext.cs" />
     <Compile Include="Entities\Activities\ActivityBase.cs" />
+    <Compile Include="Entities\Conditions\ConditionBase.cs" />
+    <Compile Include="Entities\Conditions\StoryNodeGroup.cs" />
+    <Compile Include="Entities\NodeBase.cs" />
     <Compile Include="Exceptions\ActivityExecutionFailedException.cs" />
     <Compile Include="Entities\StoryNode.cs" />
+    <Compile Include="Exceptions\ConditionPointsUnavailableNodeException.cs" />
+    <Compile Include="Exceptions\NodeInvokerNotFoundException.cs" />
+    <Compile Include="Invokers\NodeInvokerBase.cs" />
+    <Compile Include="Invokers\NodeInvokerFactory.cs" />
+    <Compile Include="Invokers\StoryNodeGroupInvoker.cs" />
+    <Compile Include="Invokers\StoryNodeInvoker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\StoryDefinitionNotFoundException.cs" />
     <Compile Include="Abstractions\IStoryManager.cs" />
