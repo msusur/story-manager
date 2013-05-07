@@ -1,6 +1,8 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using StoryBoard.Entities;
 using StoryBoard.Entities.Conditions;
+using StoryBoard.Exceptions;
 using StoryBoard.Tests.TestActivities;
 using StoryBoard.Tests.TestEntities;
 using Xunit;
@@ -48,6 +50,23 @@ namespace StoryBoard.Tests
             var storyManager = TestableStoryManager.Create(new StoryExecutor(), definition);
             var result = storyManager.ExecuteStory(new StoryContext(), "test", "Node1");
             Assert.Same("Node2", result.CurrentStepName);
+        }
+
+        [Fact]
+        public void Story_manager_throws_exception_when_no_condition_was_valid()
+        {
+            var definition = new StoryDefinition("test",
+                                new StoryNodeGroup("Node1", new TestCondition("Node11", () => false))
+                                .AddNode(new StoryNode("Node11", new EmptyActivity())));
+            var storyManager = TestableStoryManager.Create(new StoryExecutor(), definition);
+            try
+            {
+                var result = storyManager.ExecuteStory(new StoryContext(), "test");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsType<ConditionPointsUnavailableNodeException>(ex);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace StoryBoard.Exceptions
 {
+    [Serializable]
     public class StoryDefinitionNotFoundException : Exception
     {
         public StoryDefinitionNotFoundException(string storyName)
